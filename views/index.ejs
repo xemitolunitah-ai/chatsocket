@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1 class="title">CHAT DESDE SOCKET</h1>
+
+    <div id="chat">
+        <input type="text" id="username" placeholder="Ingrese su nombre de usuario">
+
+        <div id="messages">
+        </div>
+
+        <div id="writing"></div>
+
+        <textarea id="write-message" placeholder="Ingrese su mensaje"></textarea>
+    </div>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket=io()
+        const username=document.getElementById('username')
+        const writeMessage=document.getElementById('write-message')
+        const writing=document.getElementById('writing')
+        const message=document.getElementById('messages')
+
+        socket.on('all-messages',(m)=>{
+            let content=''
+            for(const message of m){
+                content+=`
+                <div class="message">
+                ${message.username}:${message.message}
+                </div>
+                <br>
+                `
+            }
+            messages.innerHTML=content
+            messages.scrollTo=messages.scrollHeight
+        })
+
+        // Detectar cuando el usuario está escribiendo
+        writeMessage.addEventListener('keydown',(event)=>{
+            socket.emit('writing',username.value)
+        })
+
+        socket.on('writing',(username)=>{
+            writing.innerHTML=username+" esta escribiendo"
+            setTimeout(() => {
+                writing.innerHTML=''
+            },3000)
+        })
+        // Enviar el mensaje al soltar la tecla Enter
+        writeMessage.addEventListener('keyup',(event)=>{
+            if(event.code=="Enter"){
+                if(username.value==""||writeMessage.value==""){
+                    return alert('El nombre de usuario y el mensaje son requeridos')
+                }
+
+                socket.emit('new-message',{
+                    username:username.value,message:writeMessage.value.slice(0,-1)
+                })
+                // Limpiamos la caja de texto
+                writeMessage.value=""
+            }
+        })
+
+    </script>
+</body>
+</html>
