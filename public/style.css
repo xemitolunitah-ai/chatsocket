@@ -8,6 +8,7 @@
     margin:0 auto;
     width: 400px;
     border: 1px solid;
+    border-left: 4px solid #b83b1d;
     border-radius: 4px;
 }
 #write-message{
@@ -20,7 +21,8 @@
 }
 #messages{
     height: 300px;
-    overflow: auto;   
+    overflow: auto; 
+  
 }
 
 .message{
@@ -30,8 +32,10 @@
     margin: 10px 0 0 10px;
     padding: 5px;
     display: inline-block;
+    white-space: pre-line;
 }
 .title{
     text-align: center;
-    color: goldenrod;
+    color: #b83b1d; /* Color rojizo picantero / rocoto */
+    font-size: 2.3rem;
 }

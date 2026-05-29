@@ -1,5 +1,5 @@
 const mongoose=require('mongoose');
-const Schema=mongoose.sChema;
+const Schema=mongoose.Schema;
 
 const MessageSchema=new mongoose.Schema({
     username:String,
